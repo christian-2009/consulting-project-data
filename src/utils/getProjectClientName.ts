@@ -5,7 +5,7 @@ export default function getProjectClientName(projects: ProjectInterface[], clien
     
     for (const projectObj of projectsClone){
       for(const clientObj of clients){
-        if (projectObj.clientId == clientObj.id){
+        if (projectObj.clientId === clientObj.id){
           projectObj.client = clientObj.name
         }
       }
