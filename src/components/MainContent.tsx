@@ -1,11 +1,12 @@
 import axios from 'axios'
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useReducer} from 'react';
 import getProjectClientName from '../utils/getProjectClientName';
+import { IndividualProjects } from './IndividualProjects';
 
 export interface ProjectInterface {
     id: string;
     clientId: string;
-    employeeIds : [];
+    employeeIds : string[];
     contract: {
         startDate: string;
         endDate: string;
@@ -19,34 +20,58 @@ export interface ClientInterface {
   name: string;
 }
 
+export interface EmployeeInterface {
+  id: string;
+  name: string;
+  role: string;
+  avatar: string;
+}
+
+const ACTION = {
+  GET_PROJECTS: 'getProjects',
+  GET_CLIENTS: 'getClients',
+  GET_EMPLOYEES: 'getEmployees'
+}
+
+const reducer = (state: any,action: any) => {
+  switch (action.type) {
+    case ACTION.GET_PROJECTS:
+      return {...state, projects: [...state.projects, action.payload.projectData]}
+    case ACTION.GET_CLIENTS:
+      return {...state, clients: [...state.clients, action.payload.clientData]}
+    case ACTION.GET_EMPLOYEES:
+      return {...state, employees: [...state.employees, action.payload.employeeData]}
+    default:
+      throw new Error()
+  }
+}
+
 
 export default function MainContent(): JSX.Element {
-  const [projects, setProjects] = useState<ProjectInterface[]>([])
+  const [state, dispatch] = useReducer(reducer, {projects: [], clients: [], employees: []})
   const [searchTerm, setSearchTerm] = useState<string>('')
-  // const [loading, setLoading] = useState(false)
-  // const [currentPage, setCurrentPage] = useState(1)
-  // const [projectPerPage, setProjectPerPage] = useState(10)
-  const [clients, setClients] = useState<ClientInterface[]>([])
-  const [projectsWithClientName, setProjectsWithClientName] =useState<ProjectInterface[]>([])
+  const [projectsWithClientsAndEmployees, setProjectsWithClientsAndEmployees] =useState<ProjectInterface[]>([])
   const [filteredProjects, setFilteredProjects] = useState<ProjectInterface[]>([])
-  const [toggle, setToggle] = useState<boolean>(true)
 
   useEffect(() => {
      const fetchData = async () => {
         const projectData = await axios.get('https://consulting-projects.academy-faculty.repl.co/api/projects')
         const projectDataToSet = await projectData.data
-        setProjects(projectDataToSet)
+        dispatch({type: ACTION.GET_PROJECTS, payload: {projectData: projectDataToSet}})
         const clientData = await axios.get('https://consulting-projects.academy-faculty.repl.co/api/clients')
         const clientDataToSet = await clientData.data
-        setClients(clientDataToSet)
-        setProjectsWithClientName(getProjectClientName(projectDataToSet,clientDataToSet))
+        dispatch({type: ACTION.GET_CLIENTS, payload: { clientData: clientDataToSet}})
+        const employeeData = await axios.get('https://consulting-projects.academy-faculty.repl.co/api/employees')
+        const employeeDataToSet = await employeeData.data
+        dispatch({type: ACTION.GET_EMPLOYEES, payload: {employeeData: employeeDataToSet}})
+        setProjectsWithClientsAndEmployees(getProjectClientName(projectDataToSet,clientDataToSet, employeeDataToSet))
     }
     fetchData()
-    console.log('this is projects', projects, 'this is clients', clients)
+    
   },[])
 
   const handleSearch = () => {
-    setFilteredProjects(projectsWithClientName.filter((project) => 
+    setFilteredProjects(projectsWithClientsAndEmployees.filter((project) => 
       typeof project.client !== 'undefined' && project.client.toLowerCase().includes(searchTerm.toLowerCase())
     ))
   }
@@ -57,8 +82,8 @@ export default function MainContent(): JSX.Element {
     }
   }
 
-  console.log('this is projects outsdie useffect', projects, 'this is clients outsdie useffect', clients)
-  
+  console.log('this is all projects with employee names and client names', projectsWithClientsAndEmployees)
+  console.log('this is projects', state.projects, 'this is clients', state.clients, 'this is employees', state.employees)
   const employeeId = 4;
   const clientId = 3;
   return (
@@ -75,27 +100,10 @@ export default function MainContent(): JSX.Element {
         placeholder='search projects...'
         value={searchTerm}
       ></input>
-      {filteredProjects.length === 0 ? 
-       projectsWithClientName.map((project) => {
-        return (
-          <div key={project.id}>
-            <h3>{project.client}</h3>
-            <h4>{project.contract.startDate}</h4>
-            <h4>{project.contract.endDate}</h4>
-            <br></br>
-          </div>
-        )
-      }) :
-      filteredProjects.map((project) => {
-        return (
-          <div key={project.id}>
-            <h3>{project.client}</h3>
-            <h4>{project.contract.startDate}</h4>
-            <h4>{project.contract.endDate}</h4>
-            <br></br>
-          </div>
-        )
-      })}
+      {filteredProjects.length === 0 ? <IndividualProjects projects={projectsWithClientsAndEmployees} /> : 
+      <IndividualProjects projects={filteredProjects} /> }
+      
     </>
   ); 
 }
+

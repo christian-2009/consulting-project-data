@@ -1,6 +1,6 @@
-import { ProjectInterface, ClientInterface } from "../components/MainContent"
+import { ProjectInterface, ClientInterface, EmployeeInterface } from "../components/MainContent"
 
-export default function getProjectClientName(projects: ProjectInterface[], clients: ClientInterface[]): ProjectInterface[]{
+export default function getProjectClientName(projects: ProjectInterface[], clients: ClientInterface[], employees: EmployeeInterface[] ): ProjectInterface[]{
     const projectsClone = projects
     
     for (const projectObj of projectsClone){
@@ -9,5 +9,15 @@ export default function getProjectClientName(projects: ProjectInterface[], clien
           projectObj.client = clientObj.name
         }
       }
-    }return projectsClone
+
+    }
+    for (const projectObj of projectsClone){
+      for(const employeeObj of employees){
+        if(projectObj.employeeIds.indexOf(employeeObj.id) !== -1){
+          const indexOfEmployee = projectObj.employeeIds.indexOf(employeeObj.id)
+          projectObj.employeeIds[indexOfEmployee] = employeeObj.name
+        }
+      }
+    }
+    return projectsClone
   }
