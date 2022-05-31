@@ -64,6 +64,7 @@ export default function MainContent(): JSX.Element {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [projectsWithClientsAndEmployees, setProjectsWithClientsAndEmployees] =
     useState<ProjectInterface[]>([]);
+  const [toggleSort, setToggleSort] = useState<boolean>(true);
 
   //getting client, employee and project data and combining them
   useEffect(() => {
@@ -120,6 +121,29 @@ export default function MainContent(): JSX.Element {
     }
   }
 
+  //toggles the sort by ascending and descending
+  function handleSortByDate() {
+    if (toggleSort === true) {
+      setProjectsWithClientsAndEmployees(
+        filtered.sort((a, b) => {
+          const date1 = new Date(a.contract.endDate).valueOf();
+          const date2 = new Date(b.contract.endDate).valueOf();
+          return date2 - date1;
+        })
+      );
+      setToggleSort(!toggleSort);
+    } else if (toggleSort === false) {
+      setProjectsWithClientsAndEmployees(
+        filtered.sort((a, b) => {
+          const date1 = new Date(a.contract.endDate).valueOf();
+          const date2 = new Date(b.contract.endDate).valueOf();
+          return date1 - date2;
+        })
+      );
+      setToggleSort(!toggleSort);
+    }
+  }
+
   return (
     <>
       <div className="main-dashboard">
@@ -133,6 +157,7 @@ export default function MainContent(): JSX.Element {
           placeholder="search projects..."
           value={searchTerm}
         ></input>
+        <button onClick={handleSortByDate}>Toggle Sort By Date</button>
         <IndividualProjects projects={filtered} />
       </div>
     </>

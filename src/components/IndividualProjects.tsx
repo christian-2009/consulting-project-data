@@ -24,11 +24,12 @@ export function IndividualProjects(props: {
             {project.client}
           </a>
           <h4 className="individual-project--date">
-            {project.contract.startDate}
-          </h4>
-          <h4 className="individual-project--date">
             {project.contract.endDate}
           </h4>
+          <h4 className="individual-project--date">
+            {project.contract.startDate}
+          </h4>
+
           <div className="individual-project--employee-names-container">
             {project.employeeIds.map((employee) => (
               <div key={employee}>
