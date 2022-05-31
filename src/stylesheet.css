@@ -1,0 +1,44 @@
+body {
+  font-family: "Karla", "sans-serif";
+  margin: 0;
+}
+
+.main-dashboard {
+  text-align: center;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  background: #29daf2;
+  color: white;
+  padding: 20px;
+  margin: 0px;
+  margin-bottom: 10px;
+}
+
+.individual-project {
+  width: 30%;
+  height: 300px;
+  margin: 0 auto;
+  margin-top: 10px;
+  border-radius: 10px;
+  background-color: #f5f5f5;
+  padding: 3px;
+}
+
+.individual-project--employee-names {
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+}
+
+.individual-project--employee-names:hover {
+  color: #29daf2;
+}
+
+.individual-project--date {
+  margin-top: -12px;
+}
