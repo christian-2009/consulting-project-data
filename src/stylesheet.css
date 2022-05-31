@@ -39,6 +39,43 @@ body {
   color: #29daf2;
 }
 
-.individual-project--date {
-  margin-top: -12px;
+.individual-project--client-names {
+  text-decoration: none;
+  color: black;
+  font-size: 25px;
+  margin-bottom: 20px;
+}
+
+.individual-project--client-names:hover {
+  color: #29daf2;
+}
+
+.employee-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.employee-page--image {
+  width: 200px;
+  height: 200px;
+}
+
+.employee-page--container {
+  text-align: center;
+  width: 600px;
+  margin: 0 auto;
+  background-color: #f5f5f5;
+  border-radius: 20px;
+}
+
+.employee-page--list {
+  list-style-type: none;
+  margin: 0 auto;
+  width: 50%;
+  text-align: left;
+}
+
+.employee-page--list-item {
+  margin-top: 15px;
+  margin-bottom: 15px;
 }

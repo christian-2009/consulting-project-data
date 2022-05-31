@@ -9,7 +9,7 @@ interface IndividualProjectInterface {
   };
   client?: string;
 }
-
+//component displays the individual projects
 export function IndividualProjects(props: {
   projects: IndividualProjectInterface[];
 }): JSX.Element {
@@ -17,7 +17,12 @@ export function IndividualProjects(props: {
     <>
       {props.projects.map((project) => (
         <div key={project.id} className="individual-project">
-          <h3>{project.client}</h3>
+          <a
+            className="individual-project--client-names"
+            href={`http://localhost:3000/clients/${project.clientId}`}
+          >
+            {project.client}
+          </a>
           <h4 className="individual-project--date">
             {project.contract.startDate}
           </h4>
