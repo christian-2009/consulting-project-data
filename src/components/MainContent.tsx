@@ -27,28 +27,40 @@ export interface EmployeeInterface {
   avatar: string;
 }
 
-const ACTION = {
-  GET_PROJECTS: "getProjects",
-  GET_CLIENTS: "getClients",
-  GET_EMPLOYEES: "getEmployees",
-};
+enum ACTION  {
+  GET_PROJECTS =  "getProjects",
+  GET_CLIENTS = "getClients",
+  GET_EMPLOYEES = "getEmployees",
+}
 
-const reducer = (state: any, action: any) => {
+interface ActionInterface {
+  type: ACTION;
+  payload: EmployeeInterface[] | ClientInterface[] | ProjectInterface[] 
+}
+
+// interface StateInterface {
+//   projects: any[];
+//   clients: any[];
+//   employees: any[]
+// }
+
+//eslint-disable-next-line
+const reducer = (state: any, action: ActionInterface) => {
   switch (action.type) {
     case ACTION.GET_PROJECTS:
       return {
         ...state,
-        projects: [...state.projects, action.payload.projectData],
+        projects: [...state.projects, action.payload],
       };
     case ACTION.GET_CLIENTS:
       return {
         ...state,
-        clients: [...state.clients, action.payload.clientData],
+        clients: [...state.clients, action.payload],
       };
     case ACTION.GET_EMPLOYEES:
       return {
         ...state,
-        employees: [...state.employees, action.payload.employeeData],
+        employees: [...state.employees, action.payload],
       };
     default:
       throw new Error();
@@ -56,6 +68,7 @@ const reducer = (state: any, action: any) => {
 };
 
 export default function MainContent(): JSX.Element {
+  //eslint-disable-next-line
   const [state, dispatch] = useReducer(reducer, {
     projects: [],
     clients: [],
@@ -72,18 +85,18 @@ export default function MainContent(): JSX.Element {
       const projectData = await axios.get(
         "https://consulting-projects.academy-faculty.repl.co/api/projects"
       );
-      const projectDataToSet = await projectData.data;
+      const projectDataToSet: ProjectInterface[] = await projectData.data;
       dispatch({
         type: ACTION.GET_PROJECTS,
-        payload: { projectData: projectDataToSet },
+        payload: projectDataToSet 
       });
       const clientData = await axios.get(
         "https://consulting-projects.academy-faculty.repl.co/api/clients"
       );
-      const clientDataToSet = await clientData.data;
+      const clientDataToSet: ClientInterface[] = await clientData.data;
       dispatch({
         type: ACTION.GET_CLIENTS,
-        payload: { clientData: clientDataToSet },
+        payload: clientDataToSet ,
       });
       const employeeData = await axios.get(
         "https://consulting-projects.academy-faculty.repl.co/api/employees"
@@ -91,7 +104,7 @@ export default function MainContent(): JSX.Element {
       const employeeDataToSet = await employeeData.data;
       dispatch({
         type: ACTION.GET_EMPLOYEES,
-        payload: { employeeData: employeeDataToSet },
+        payload: employeeDataToSet ,
       });
       setProjectsWithClientsAndEmployees(
         getProjectClientName(
@@ -143,7 +156,7 @@ export default function MainContent(): JSX.Element {
       setToggleSort(!toggleSort);
     }
   }
-
+  
   return (
     <>
       <div className="main-dashboard">
