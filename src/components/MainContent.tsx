@@ -27,15 +27,15 @@ export interface EmployeeInterface {
   avatar: string;
 }
 
-enum ACTION  {
-  GET_PROJECTS =  "getProjects",
+enum ACTION {
+  GET_PROJECTS = "getProjects",
   GET_CLIENTS = "getClients",
   GET_EMPLOYEES = "getEmployees",
 }
 
 interface ActionInterface {
   type: ACTION;
-  payload: EmployeeInterface[] | ClientInterface[] | ProjectInterface[] 
+  payload: EmployeeInterface[] | ClientInterface[] | ProjectInterface[];
 }
 
 // interface StateInterface {
@@ -88,7 +88,7 @@ export default function MainContent(): JSX.Element {
       const projectDataToSet: ProjectInterface[] = await projectData.data;
       dispatch({
         type: ACTION.GET_PROJECTS,
-        payload: projectDataToSet 
+        payload: projectDataToSet,
       });
       const clientData = await axios.get(
         "https://consulting-projects.academy-faculty.repl.co/api/clients"
@@ -96,7 +96,7 @@ export default function MainContent(): JSX.Element {
       const clientDataToSet: ClientInterface[] = await clientData.data;
       dispatch({
         type: ACTION.GET_CLIENTS,
-        payload: clientDataToSet ,
+        payload: clientDataToSet,
       });
       const employeeData = await axios.get(
         "https://consulting-projects.academy-faculty.repl.co/api/employees"
@@ -104,7 +104,7 @@ export default function MainContent(): JSX.Element {
       const employeeDataToSet = await employeeData.data;
       dispatch({
         type: ACTION.GET_EMPLOYEES,
-        payload: employeeDataToSet ,
+        payload: employeeDataToSet,
       });
       setProjectsWithClientsAndEmployees(
         getProjectClientName(
@@ -156,7 +156,7 @@ export default function MainContent(): JSX.Element {
       setToggleSort(!toggleSort);
     }
   }
-  
+
   return (
     <>
       <div className="main-dashboard">
