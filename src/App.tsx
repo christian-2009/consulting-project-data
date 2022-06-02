@@ -90,7 +90,10 @@ function App(): JSX.Element {
             path="/employees/:employeeId"
             element={<Employee data={state.data} />}
           />
-          <Route path="/clients/:clientId" element={<ClientInfo data={state.data}/>} />
+          <Route
+            path="/clients/:clientId"
+            element={<ClientInfo data={state.data} />}
+          />
         </Routes>
       </>
     </Router>

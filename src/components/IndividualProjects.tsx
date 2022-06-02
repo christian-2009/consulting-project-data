@@ -8,7 +8,9 @@ export function IndividualProjects(props: {
     <>
       {props.projects.map((project) => (
         <div key={project.id} className="individual-project">
-          <h2>Project {props.projects.length - props.projects.indexOf(project)}</h2>
+          <h2>
+            Project {props.projects.length - props.projects.indexOf(project)}
+          </h2>
           <a
             className="individual-project--client-names"
             href={`http://localhost:3000/clients/${project.clientId}`}
@@ -23,20 +25,22 @@ export function IndividualProjects(props: {
           </h4>
           <div className="individual-project--employee-names-container">
             <h4>Employees:</h4>
-            {project.employeeIds.length > 0 ?
+            {project.employeeIds.length > 0 ? (
               project.employeeIds.map((employee) => (
-              <div key={employee}>
-                <a
-                  className="individual-project--employee-names"
-                  href={`http://localhost:3000/employees/${
-                    employee.split("/")[0]
-                  }`}
-                >
-                  {employee.split("/")[1]}
-                </a>
-              </div>
-            )) : <p>No employees yet</p>}
-          
+                <div key={employee}>
+                  <a
+                    className="individual-project--employee-names"
+                    href={`http://localhost:3000/employees/${
+                      employee.split("/")[0]
+                    }`}
+                  >
+                    {employee.split("/")[1]}
+                  </a>
+                </div>
+              ))
+            ) : (
+              <p>No employees yet</p>
+            )}
           </div>
           <br></br>
         </div>
