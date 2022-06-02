@@ -1,4 +1,5 @@
 import { ProjectInterface } from "./MainContent";
+import { URL } from "../utils/URL";
 
 //component displays the individual projects
 export function IndividualProjects(props: {
@@ -8,20 +9,19 @@ export function IndividualProjects(props: {
     <>
       {props.projects.map((project) => (
         <div key={project.id} className="individual-project">
-          <h2>
-            Project {props.projects.length - props.projects.indexOf(project)}
-          </h2>
+          <h2>Project {project.displayId && project.displayId}</h2>
           <a
             className="individual-project--client-names"
-            href={`http://localhost:3000/clients/${project.clientId}`}
+            href={`${URL}clients/${project.clientId}`}
           >
             {project.client}
           </a>
+          <h4>Project size: {project.contract.size}</h4>
           <h4 className="individual-project--date">
-            {project.contract.endDate}
+            End date: {project.contract.endDate}
           </h4>
           <h4 className="individual-project--date">
-            {project.contract.startDate}
+            Start Date: {project.contract.startDate}
           </h4>
           <div className="individual-project--employee-names-container">
             <h4>Employees:</h4>
@@ -30,9 +30,7 @@ export function IndividualProjects(props: {
                 <div key={employee}>
                   <a
                     className="individual-project--employee-names"
-                    href={`http://localhost:3000/employees/${
-                      employee.split("/")[0]
-                    }`}
+                    href={`${URL}employees/${employee.split("/")[0]}`}
                   >
                     {employee.split("/")[1]}
                   </a>
