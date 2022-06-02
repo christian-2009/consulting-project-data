@@ -8,7 +8,7 @@ export function IndividualProjects(props: {
     <>
       {props.projects.map((project) => (
         <div key={project.id} className="individual-project">
-          <h2>Project Number {props.projects.length - props.projects.indexOf(project)}</h2>
+          <h2>Project {props.projects.length - props.projects.indexOf(project)}</h2>
           <a
             className="individual-project--client-names"
             href={`http://localhost:3000/clients/${project.clientId}`}
