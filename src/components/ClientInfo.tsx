@@ -79,7 +79,7 @@ export default function ClientInfo(props: ClientInfoInterface): JSX.Element {
       <div className="client-page">
         <h1 className="title">{state.client.name}</h1>
         <div className="client-page--container">
-          <h2>Projects Completed</h2>
+          <h2>PROJECTS COMPLETED</h2>
           {projectsForClient.map((project) => (
             <div key={project.id}>
               <h3>

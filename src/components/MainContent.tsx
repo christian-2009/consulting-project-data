@@ -154,7 +154,7 @@ export default function MainContent(props: MainContentInterface): JSX.Element {
         ></input>
         <button onClick={handleSortByDate}>Toggle Sort By Date</button>
         <button onClick={handleSortBySize}>Sort by contract size</button>
-        <h3>Aggregate consultancy project revenue: £{revenue}</h3>
+        <h3>Aggregate Consultancy Project Revenue: £{revenue}</h3>
         <IndividualProjects projects={filtered} />
       </div>
     </>

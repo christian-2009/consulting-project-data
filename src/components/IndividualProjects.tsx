@@ -18,10 +18,10 @@ export function IndividualProjects(props: {
           </a>
           <h4>Project size: {project.contract.size}</h4>
           <h4 className="individual-project--date">
-            {project.contract.endDate}
+            End date: {project.contract.endDate}
           </h4>
           <h4 className="individual-project--date">
-            {project.contract.startDate}
+            Start Date: {project.contract.startDate}
           </h4>
           <div className="individual-project--employee-names-container">
             <h4>Employees:</h4>
