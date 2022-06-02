@@ -82,10 +82,7 @@ export default function ClientInfo(props: ClientInfoInterface): JSX.Element {
           <h2>PROJECTS COMPLETED</h2>
           {projectsForClient.map((project) => (
             <div key={project.id}>
-              <h3>
-                Project{" "}
-                {projectsForClient.length - projectsForClient.indexOf(project)}
-              </h3>
+              <h3>Project {project.displayId}</h3>
               <p>
                 {project.contract.startDate} - {project.contract.endDate}
               </p>
