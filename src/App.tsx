@@ -4,10 +4,7 @@ import Employee from "./components/Employee";
 import ClientInfo from "./components/ClientInfo";
 import "./stylesheet.css";
 import { useReducer, useEffect } from "react";
-import {
-  ClientInterface,
-  ProjectInterface,
-} from "./components/MainContent";
+import { ClientInterface, ProjectInterface } from "./components/MainContent";
 import axios from "axios";
 import getProjectClientNameAndEmployeeNames from "./utils/getProjectClientNameAndEmployeeNames";
 
@@ -46,7 +43,6 @@ function App(): JSX.Element {
     data: [],
   });
 
-
   //getting client, employee and project data and combining them
   useEffect(() => {
     const fetchData = async () => {
@@ -78,11 +74,18 @@ function App(): JSX.Element {
   }, []);
   console.log("this is data", state.data);
 
+  //sorting initial data
+  const sortedData = state.data.sort((a, b) => {
+    const date1 = new Date(a.contract.endDate).valueOf();
+    const date2 = new Date(b.contract.endDate).valueOf();
+    return date2 - date1;
+  });
+
   return (
     <Router>
       <>
         <Routes>
-          <Route path="/" element={<MainContent data={state.data} />} />
+          <Route path="/" element={<MainContent data={sortedData} />} />
           <Route
             path="/employees/:employeeId"
             element={<Employee data={state.data} />}

@@ -31,17 +31,16 @@ interface MainContentInterface {
 
 export default function MainContent(props: MainContentInterface): JSX.Element {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [toggleSort, setToggleSort] = useState<boolean>(true);
+  const [toggleSort, setToggleSort] = useState<boolean>(false);
 
-   //toggles the sort by ascending and descending
-   function handleSortByDate() {
+  //toggles the sort by ascending and descending
+  function handleSortByDate() {
     if (toggleSort === true) {
       props.data.sort((a, b) => {
         const date1 = new Date(a.contract.endDate).valueOf();
         const date2 = new Date(b.contract.endDate).valueOf();
         return date2 - date1;
       });
-      console.log('I am sorted')
       setToggleSort(!toggleSort);
     } else if (toggleSort === false) {
       props.data.sort((a, b) => {
@@ -71,7 +70,10 @@ export default function MainContent(props: MainContentInterface): JSX.Element {
     }
   }
 
- 
+  let revenue = 0;
+  for (const project of props.data) {
+    revenue += parseInt(project.contract.size);
+  }
 
   return (
     <>
@@ -87,6 +89,7 @@ export default function MainContent(props: MainContentInterface): JSX.Element {
           value={searchTerm}
         ></input>
         <button onClick={handleSortByDate}>Toggle Sort By Date</button>
+        <h3>Aggregate consultancy project revenue: £{revenue}</h3>
         <IndividualProjects projects={filtered} />
       </div>
     </>

@@ -1,7 +1,4 @@
-import {
-  ProjectInterface,
-} from "./MainContent";
-
+import { ProjectInterface } from "./MainContent";
 
 //component displays the individual projects
 export function IndividualProjects(props: {

@@ -1,13 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useReducer } from "react";
 import axios from "axios";
-import {
-  EmployeeInterface,
-  ProjectInterface
-} from "./MainContent";
+import { EmployeeInterface, ProjectInterface } from "./MainContent";
 
 enum ACTION {
-  GET_EMPLOYEE = 'getEmployee'
+  GET_EMPLOYEE = "getEmployee",
 }
 
 interface ActionInterface {
@@ -21,7 +18,7 @@ interface StateInterface {
     name: string;
     role: string;
     avatar: string;
-  }
+  };
 }
 
 const reducer = (
@@ -38,7 +35,7 @@ const reducer = (
 };
 
 interface EmployeeComponentInterface {
-  data: ProjectInterface[]
+  data: ProjectInterface[];
 }
 
 //component displays the employee data
@@ -46,25 +43,23 @@ export default function Employee(
   props: EmployeeComponentInterface
 ): JSX.Element {
   const [state, dispatch] = useReducer(reducer, {
-    employee: {id: '', name: '', role: '', avatar: ''  }
+    employee: { id: "", name: "", role: "", avatar: "" },
   });
 
   const { employeeId } = useParams();
   const definedEmployeeId = employeeId ? employeeId : "not an employee";
-
 
   //get you the projects worked on by employee
   function getProjectsEmployeeWorked(
     definedEmployeeId: string,
     data: ProjectInterface[]
   ) {
-
-    const arrayOfProjects = []
+    const arrayOfProjects = [];
     for (const project of data) {
       for (const employee of project.employeeIds)
-      if (employee.split('/')[0].includes(definedEmployeeId)) {
-        arrayOfProjects.push(project);
-      }
+        if (employee.split("/")[0].includes(definedEmployeeId)) {
+          arrayOfProjects.push(project);
+        }
     }
 
     return arrayOfProjects;
@@ -72,14 +67,12 @@ export default function Employee(
 
   //fetch the employee data
   useEffect(() => {
-
     const fetchEmployeeData = async () => {
       const employeeData = await axios.get(
         `https://consulting-projects.academy-faculty.repl.co/api/employees/${employeeId}`
       );
       const employeeDataToSet: EmployeeInterface = await employeeData.data;
       dispatch({ type: ACTION.GET_EMPLOYEE, payload: employeeDataToSet });
-
     };
     fetchEmployeeData();
     //eslint-disable-next-line
