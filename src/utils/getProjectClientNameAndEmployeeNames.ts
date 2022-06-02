@@ -4,7 +4,7 @@ import {
   EmployeeInterface,
 } from "../components/MainContent";
 
-export default function getProjectClientName(
+export default function getProjectClientNameAndEmployeeNames(
   projects: ProjectInterface[],
   clients: ClientInterface[],
   employees: EmployeeInterface[]
@@ -26,5 +26,6 @@ export default function getProjectClientName(
       }
     }
   }
+
   return projectsClone;
 }
