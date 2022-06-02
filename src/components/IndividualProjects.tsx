@@ -1,17 +1,11 @@
-interface IndividualProjectInterface {
-  id: string;
-  clientId: string;
-  employeeIds: string[];
-  contract: {
-    startDate: string;
-    endDate: string;
-    size: string;
-  };
-  client?: string;
-}
+import {
+  ProjectInterface,
+} from "./MainContent";
+
+
 //component displays the individual projects
 export function IndividualProjects(props: {
-  projects: IndividualProjectInterface[];
+  projects: ProjectInterface[];
 }): JSX.Element {
   return (
     <>

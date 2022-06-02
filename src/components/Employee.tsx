@@ -3,132 +3,104 @@ import { useEffect, useReducer } from "react";
 import axios from "axios";
 import {
   EmployeeInterface,
-  ProjectInterface,
-  ClientInterface,
+  ProjectInterface
 } from "./MainContent";
 
 enum ACTION {
-  GET_NAME = "getName",
-  GET_ROLE = "getRole",
-  GET_AVATAR = "getAvatar",
-  GET_PROJECTS = "getProjects",
-  GET_CLIENTS = "getClients",
+  GET_EMPLOYEE = 'getEmployee'
 }
 
-// interface ActionInterface {
-//   type: ACTION;
-//   payload:
-// }
+interface ActionInterface {
+  type: ACTION;
+  payload: EmployeeInterface;
+}
 
-//eslint-disable-next-line
-const reducer = (state: any, action: any) => {
+interface StateInterface {
+  employee: {
+    id: string;
+    name: string;
+    role: string;
+    avatar: string;
+  }
+}
+
+const reducer = (
+  state: StateInterface,
+  action: ActionInterface
+): StateInterface => {
   switch (action.type) {
-    case ACTION.GET_NAME:
-      return { ...state, name: action.payload.name };
-    case ACTION.GET_ROLE:
-      return { ...state, role: action.payload.role };
-    case ACTION.GET_AVATAR:
-      return { ...state, avatar: action.payload.avatar };
-    case ACTION.GET_PROJECTS:
-      return { ...state, projects: action.payload.projects };
-    case ACTION.GET_CLIENTS:
-      return { ...state, clients: action.payload.clients };
+    case ACTION.GET_EMPLOYEE:
+      return { ...state, employee: action.payload };
+
     default:
       throw new Error();
   }
 };
 
+interface EmployeeComponentInterface {
+  data: ProjectInterface[]
+}
+
 //component displays the employee data
-export default function Employee(): JSX.Element {
+export default function Employee(
+  props: EmployeeComponentInterface
+): JSX.Element {
   const [state, dispatch] = useReducer(reducer, {
-    name: "",
-    role: "",
-    avatar: "",
-    projects: [],
-    clients: [],
+    employee: {id: '', name: '', role: '', avatar: ''  }
   });
 
   const { employeeId } = useParams();
-
   const definedEmployeeId = employeeId ? employeeId : "not an employee";
+
+
+  //get you the projects worked on by employee
+  function getProjectsEmployeeWorked(
+    definedEmployeeId: string,
+    data: ProjectInterface[]
+  ) {
+
+    const arrayOfProjects = []
+    for (const project of data) {
+      for (const employee of project.employeeIds)
+      if (employee.split('/')[0].includes(definedEmployeeId)) {
+        arrayOfProjects.push(project);
+      }
+    }
+
+    return arrayOfProjects;
+  }
 
   //fetch the employee data
   useEffect(() => {
+
     const fetchEmployeeData = async () => {
       const employeeData = await axios.get(
         `https://consulting-projects.academy-faculty.repl.co/api/employees/${employeeId}`
       );
       const employeeDataToSet: EmployeeInterface = await employeeData.data;
-      console.log(employeeDataToSet);
-      dispatch({ type: ACTION.GET_ROLE, payload: employeeDataToSet });
-      dispatch({ type: ACTION.GET_NAME, payload: employeeDataToSet });
-      dispatch({ type: ACTION.GET_AVATAR, payload: employeeDataToSet });
-      const projectData = await axios.get(
-        "https://consulting-projects.academy-faculty.repl.co/api/projects"
-      );
-      const projectDataToSet = await projectData.data;
-      dispatch({
-        type: ACTION.GET_PROJECTS,
-        payload: { projects: projectDataToSet },
-      });
-      const clientData = await axios.get(
-        "https://consulting-projects.academy-faculty.repl.co/api/clients"
-      );
-      const clientDataToSet = await clientData.data;
-      dispatch({
-        type: ACTION.GET_CLIENTS,
-        payload: { clients: clientDataToSet },
-      });
+      dispatch({ type: ACTION.GET_EMPLOYEE, payload: employeeDataToSet });
+
     };
     fetchEmployeeData();
     //eslint-disable-next-line
   }, []);
 
-  //get you the projects worked on by employee with the client names
-  function getProjectsEmployeeWorked(
-    employee: string,
-    projects: ProjectInterface[],
-    clients: ClientInterface[]
-  ) {
-    const arrayOfProjects = [];
-    console.log(projects[0]);
-    for (const project of projects) {
-      if (project.employeeIds.includes(employee)) {
-        arrayOfProjects.push(project);
-      }
-    }
-
-    console.log("this is array of projects", arrayOfProjects);
-    for (const project of arrayOfProjects) {
-      for (const client of clients) {
-        console.log("this is project id", project.clientId);
-        console.log("client", client);
-        if (project.clientId === client.id) {
-          console.log("hiya");
-          project.client = client.name;
-        }
-      }
-    }
-    return arrayOfProjects;
-  }
-
   const projectsEmployeeWorked = getProjectsEmployeeWorked(
     definedEmployeeId,
-    state.projects,
-    state.clients
+    props.data
   );
-  console.log("final result", projectsEmployeeWorked);
+  console.log("this is array we want", projectsEmployeeWorked);
 
   return (
     <>
       <div className="body">
         <div className="employee-page">
-          <h1 className="title">{state.name}</h1>
+          <h1 className="title">{state.employee.name}</h1>
           <div className="employee-page--container">
-            <h3>Role: {state.role}</h3>
+            <h3>Role: {state.employee.role}</h3>
             <img
               className="employee-page--image"
-              src={state.avatar}
+              src={state.employee.avatar}
               alt="employee avatar"
             />
             <p>Projects:</p>
