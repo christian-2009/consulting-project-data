@@ -81,6 +81,13 @@ function App(): JSX.Element {
     return date2 - date1;
   });
 
+  //giving each sorted project an id
+  let count = 100;
+  for (const project of sortedData) {
+    project.displayId = count;
+    count--;
+  }
+
   return (
     <Router>
       <>
