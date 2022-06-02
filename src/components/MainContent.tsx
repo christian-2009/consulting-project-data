@@ -33,8 +33,8 @@ export default function MainContent(props: MainContentInterface): JSX.Element {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [toggleSort, setToggleSort] = useState<boolean>(false);
 
-  //toggles the sort by ascending and descending
-  function handleSortByDate() {
+   //toggles the sort by ascending and descending
+   function handleSortByDate() {
     if (toggleSort === true) {
       props.data.sort((a, b) => {
         const date1 = new Date(a.contract.endDate).valueOf();
@@ -70,9 +70,9 @@ export default function MainContent(props: MainContentInterface): JSX.Element {
     }
   }
 
-  let revenue = 0;
-  for (const project of props.data) {
-    revenue += parseInt(project.contract.size);
+  let revenue = 0
+  for (const project of props.data){
+    revenue += parseInt(project.contract.size)
   }
 
   return (
