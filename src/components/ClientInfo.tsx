@@ -64,43 +64,44 @@ export default function ClientInfo(props: ClientInfoInterface): JSX.Element {
   }
 
   //finding what employees have worked on the projects
-  const employeesForClient: string[] = []
-  for (const project of projectsForClient){
-    for (const employees of project.employeeIds){
-      const currentEmployee = employees.split('/')[1]
-      if(!employeesForClient.includes(currentEmployee)){
-        employeesForClient.push(currentEmployee)
+  const employeesForClient: string[] = [];
+  for (const project of projectsForClient) {
+    for (const employees of project.employeeIds) {
+      const currentEmployee = employees.split("/")[1];
+      if (!employeesForClient.includes(currentEmployee)) {
+        employeesForClient.push(currentEmployee);
       }
     }
   }
 
-
   return (
     <>
-      <div className = 'client-page'>
-      <h1 className="title">{state.client.name}</h1>
-      <div className = 'client-page--container'>
-      <h2>Projects Completed</h2>
-      {projectsForClient.map((project) => (
-        <div key = {project.id}>
-          <h3>Project {projectsForClient.length - projectsForClient.indexOf(project)}</h3>
-          <p>{project.contract.startDate} - {project.contract.endDate}</p>
+      <div className="client-page">
+        <h1 className="title">{state.client.name}</h1>
+        <div className="client-page--container">
+          <h2>Projects Completed</h2>
+          {projectsForClient.map((project) => (
+            <div key={project.id}>
+              <h3>
+                Project{" "}
+                {projectsForClient.length - projectsForClient.indexOf(project)}
+              </h3>
+              <p>
+                {project.contract.startDate} - {project.contract.endDate}
+              </p>
+            </div>
+          ))}
+          <div className="client-page--list-container">
+            <h3>Employees who have worked with {state.client.name} </h3>
+            <ul className="client-page--list">
+              {employeesForClient.map((employee) => (
+                <div key={employee}>
+                  <li>{employee}</li>
+                </div>
+              ))}
+            </ul>
+          </div>
         </div>
-      )
-      )}
-      <div className ='client-page--list-container'>
-      <h3>Employees who have worked with {state.client.name} </h3>
-      <ul className = 'client-page--list'>
-      {employeesForClient.map((employee) => (
-        <div key={employee}>
-          <li>{employee}</li>
-        </div>
-      )
-
-      )}
-      </ul>
-      </div>
-      </div>
       </div>
     </>
   );
