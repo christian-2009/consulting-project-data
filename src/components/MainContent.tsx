@@ -59,7 +59,6 @@ export default function MainContent(props: MainContentInterface): JSX.Element {
   const [toggleSortDate, setToggleSortDate] = useState<boolean>(false);
   const [toggleSortSize, setToggleSortSize] = useState<boolean>(false);
 
-
   //toggles the sort by ascending and descending
   function handleSortByDate() {
     if (toggleSortDate === true) {
