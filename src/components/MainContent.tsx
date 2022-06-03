@@ -94,7 +94,7 @@ export default function MainContent(props: MainContentInterface): JSX.Element {
         if (parseInt(a.contract.size) > parseInt(b.contract.size)) {
           return -1;
         } else if (parseInt(a.contract.size) < parseInt(b.contract.size)) {
-          return -1;
+          return 1;
         } else return 0;
       });
       setToggleSortSize(!toggleSortSize);
